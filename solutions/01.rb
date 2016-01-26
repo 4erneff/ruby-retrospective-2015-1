@@ -1,8 +1,6 @@
 def convert_to_bgn(price, currency)
-  currencies = { :bgn => 1.00, :usd => 1.7408, :eur => 1.9557, :gbp => 2.6415 }
-  factor = currencies[currency]
-  new_price = price * factor
-  new_price.round(2)
+  courses = { bgn: 1.00, usd: 1.7408, eur: 1.9557, gbp: 2.6415 }
+  (courses[currency] * price).round(2)
 end
 
 def compare_prices(price_one, currency_one, price_two, currency_two)
