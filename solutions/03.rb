@@ -1,7 +1,7 @@
 class Integer
   def prime?
     n = self
-    n == 1? false : 2.upto(n - 1).all? { |a| n.remainder(a).nonzero? }
+    n == 1 ? false : 2.upto(n - 1).all? { |a| n.remainder(a).nonzero? }
   end
 end
 
@@ -16,7 +16,7 @@ class RationalSequence
     while used.length < @size
       if !(used.include? Rational(a,b)) then
         yield Rational(a, b)
-        used.push Rational(a, b)
+        used << Rational(a, b)
       end
       a = a + add
       b = sum - a
@@ -58,7 +58,7 @@ class FibonacciSequence
 
   def each
     first, second = @first, @second
-    (1..@size).each do
+    1.upto(@size).each do
       yield first
       first, second = second, first + second
     end
@@ -85,16 +85,15 @@ module DrunkenMathematician
   end
 
   def worthless(n)
-    fibonacci_number = FibonacciSequence.new(n+1).to_a.last
-    rational_numbers = []
-    count = 1
+    fibonacci_number = FibonacciSequence.new(n).to_a.last
+    rational_numbers, count = [], 1
     while true
       new_rational_sequence = RationalSequence.new(count).to_a
       sum = new_rational_sequence.inject(:+)
       if sum <= fibonacci_number then
         rational_numbers = new_rational_sequence
       else
-        return rational_numbers
+        return rational_numbers[0..-1]
       end
       count = count + 1
     end
