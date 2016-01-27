@@ -100,7 +100,7 @@ class WarHand < Hand
   end
 
   def allow_face_up?
-    @cards.size <= 3 ? true : false
+    @cards.size <= 3
   end
 end
 
@@ -174,12 +174,18 @@ class BeloteHand < Hand
     ranks = BeloteDeck.new.ranks
     cards = cards.map { |c| ranks.find_index c.rank }.sort
     last = cards[0]
+    groups = group_consecutive(cards)
+    groups.to_a.any? { |group| group.size > 2 }
+  end
+
+  def group_consecutive(cards)
+    last = cards[0]
     groups = cards.slice_before do |e|
       last, prev2 = e, last
       prev2 + 1 != e
     end
-    groups.to_a.any? { |group| group.size > 2 }
   end
+
 end
 
 class BeloteDeck < Deck
@@ -188,7 +194,6 @@ class BeloteDeck < Deck
     @hand_size = 8
     @ranks = [7, 8, 9, :jack, :queen, :king, 10, :ace]
     @suits = [:spades, :hearts, :diamonds, :clubs]
-
     if cards == nil
       @cards = generate_deck
     else
